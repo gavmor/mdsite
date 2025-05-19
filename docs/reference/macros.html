@@ -41,6 +41,12 @@ reuses the <code>{{title}}</code> logic internally to generate the titles of nav
 <p>Generates a table of contents. With no arguments, it generates a TOC for the current page&#39;s directory and its subdirectories.</p>
 <p>You can optionally specify the directory whose table of contents you want to generate. This must be an absolute path, which <code>mdsite</code> will interpret, as always, as relative to the source root.</p>
 <p>For example, to generate the TOC for the whole site, you could use <code>{{toc /}}</code>.</p>
+<p>The options available for <code>toc</code> are:</p>
+<ul>
+<li><code>--include-latent</code>: causes the table of contents to include files that are
+listed in an <code>order.txt</code> file but not present in the filesystem. This might
+be useful if you are writing a book, starting with the table of contents.</li>
+</ul>
 <h2 id="macro-next"><code>{{next}}</code></h2>
 <p>Generates a link to the next page on the site. The order of pages is determined by <a href="./order">order.txt</a> files.</p>
 <h2 id="macro-prev"><code>{{prev}}</code></h2>

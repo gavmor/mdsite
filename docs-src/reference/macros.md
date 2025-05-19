@@ -34,6 +34,12 @@ You can optionally specify the directory whose table of contents you want to gen
 
 For example, to generate the TOC for the whole site, you could use `{{macro toc /}}`.
 
+The options available for `toc` are:
+
+- `--include-latent`: causes the table of contents to include files that are
+  listed in an `order.txt` file but not present in the filesystem. This might
+  be useful if you are writing a book, starting with the table of contents.
+
 ## `{{macro next}}`
 
 Generates a link to the next page on the site. The order of pages is determined by [order.txt](./order) files.
