@@ -98,9 +98,8 @@ export function htmlToc(
 }
 
 function htmlForToc(toc: TreeOfContents, linkOrigin: OutputPath): string {
-  return (
-    "<ul>" + toc.map((node) => htmlTocNode(node, linkOrigin)).join("") + "</ul>"
-  );
+  const listItems = toc.map((node) => htmlTocNode(node, linkOrigin)).join("");
+  return `<ul>${listItems}</ul>`;
 }
 
 function htmlTocNode(node: Node, linkOrigin: OutputPath): string {
