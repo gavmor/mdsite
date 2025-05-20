@@ -30,12 +30,11 @@ export function TmpDir(): TmpDir {
       .then((bytes) => bytes.toString());
   }
 
-  function write(path: string, contents: string): Promise<void> {
-    return tmp()
-      .then(
-        (tmp) => (fs.mkdir(join(tmp, dirname(path)), { recursive: true }), tmp)
-      )
-      .then((tmp) => fs.writeFile(join(tmp, path), contents));
+  async function write(path: string, contents: string): Promise<void> {
+    return tmp().then(async (tmp) => {
+      await fs.mkdir(join(tmp, dirname(path)), { recursive: true });
+      await fs.writeFile(join(tmp, path), contents);
+    });
   }
 
   function ls(): Promise<Array<string>> {
