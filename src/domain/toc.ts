@@ -97,9 +97,14 @@ export function htmlToc(
   return htmlForToc(theToc, linkOrigin);
 }
 
-function htmlForToc(toc: TreeOfContents, linkOrigin: OutputPath): string {
+function htmlForToc(
+  toc: TreeOfContents,
+  linkOrigin: OutputPath,
+  isRoot = true
+): string {
+  const cssClass = isRoot ? ` class="mdsite-toc"` : "";
   const listItems = toc.map((node) => htmlTocNode(node, linkOrigin)).join("");
-  return `<ul>${listItems}</ul>`;
+  return `<ul${cssClass}>${listItems}</ul>`;
 }
 
 function htmlTocNode(node: Node, linkOrigin: OutputPath): string {
@@ -112,7 +117,7 @@ function htmlTocNode(node: Node, linkOrigin: OutputPath): string {
     case "branch":
       return `<li${cssClass}><a href="${relativePath}">${
         node.title
-      }</a>${htmlForToc(node.contents, linkOrigin)}</li>`;
+      }</a>${htmlForToc(node.contents, linkOrigin, false)}</li>`;
     case "leaf":
       return `<li${cssClass}><a href="${relativePath}">${node.title}</a></li>`;
     case "bud":

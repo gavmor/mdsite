@@ -144,7 +144,7 @@ test("htmlToc", {
       { type: "html", path: of("/foo.html"), title: "This Is Foo" },
     ];
 
-    const expected = `<ul><li><a href="foo.html">This Is Foo</a></li></ul>`;
+    const expected = `<ul class="mdsite-toc"><li><a href="foo.html">This Is Foo</a></li></ul>`;
 
     expect(htmlToc(files, OutputPath.of("/index.html")), is, expected);
   },
@@ -155,7 +155,7 @@ test("htmlToc", {
       { type: "html", path: of("/foo.html"), title: "Foo" },
     ];
 
-    const expected = `<ul><li><a href="bar.html">Bar</a></li><li><a href="foo.html">Foo</a></li></ul>`;
+    const expected = `<ul class="mdsite-toc"><li><a href="bar.html">Bar</a></li><li><a href="foo.html">Foo</a></li></ul>`;
 
     expect(htmlToc(files, OutputPath.of("/index.html")), is, expected);
   },
@@ -165,7 +165,7 @@ test("htmlToc", {
       { type: "html", path: of("/foo.html"), title: "Foo" },
     ];
 
-    const expected = `<ul><li><a href="../../../foo.html">Foo</a></li></ul>`;
+    const expected = `<ul class="mdsite-toc"><li><a href="../../../foo.html">Foo</a></li></ul>`;
 
     expect(
       htmlToc(files, OutputPath.of("/one/two/three/foo.html"), { root: "/" }),
@@ -180,7 +180,7 @@ test("htmlToc", {
       { type: "html", path: of("/bar/baz.html"), title: "Baz" },
     ];
 
-    const expected = `<ul><li><a href="bar/index.html">Bar</a><ul><li><a href="bar/baz.html">Baz</a></li></ul></li></ul>`;
+    const expected = `<ul class="mdsite-toc"><li><a href="bar/index.html">Bar</a><ul><li><a href="bar/baz.html">Baz</a></li></ul></li></ul>`;
 
     expect(htmlToc(files, OutputPath.of("/index.html")), is, expected);
   },
