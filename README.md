@@ -64,6 +64,7 @@ See [benchristel.github.io/mdsite](https://benchristel.github.io/mdsite).
 - Authors should be able to customize the home URL and link text on a `{{breadcrumb}}`. E.g. `{{breadcrumb --home-url /hello.html --home-text "🛖"}}`
 - Authors should have some way to use different templates or different CSS files per page/subtree
   - Proposal 1: `_template.html` per directory, applies to .md files within that directory.
+  - It would also be nice to have a different template for index pages.
 
 ### Tools
 
