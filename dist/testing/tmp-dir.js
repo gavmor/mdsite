@@ -31,9 +31,12 @@ export function TmpDir() {
             .then((bytes) => bytes.toString());
     }
     function write(path, contents) {
-        return tmp()
-            .then((tmp) => (fs.mkdir(join(tmp, dirname(path)), { recursive: true }), tmp))
-            .then((tmp) => fs.writeFile(join(tmp, path), contents));
+        return __awaiter(this, void 0, void 0, function* () {
+            return tmp().then((tmp) => __awaiter(this, void 0, void 0, function* () {
+                yield fs.mkdir(join(tmp, dirname(path)), { recursive: true });
+                yield fs.writeFile(join(tmp, path), contents);
+            }));
+        });
     }
     function ls() {
         return tmp().then((tmp) => fs.readdir(tmp));

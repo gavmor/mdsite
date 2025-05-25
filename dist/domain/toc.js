@@ -36,8 +36,10 @@ export function htmlToc(entries, linkOrigin, options = {}) {
     }
     return htmlForToc(theToc, linkOrigin);
 }
-function htmlForToc(toc, linkOrigin) {
-    return ("<ul>" + toc.map((node) => htmlTocNode(node, linkOrigin)).join("") + "</ul>");
+function htmlForToc(toc, linkOrigin, isRoot = true) {
+    const cssClass = isRoot ? ` class="mdsite-toc"` : "";
+    const listItems = toc.map((node) => htmlTocNode(node, linkOrigin)).join("");
+    return `<ul${cssClass}>${listItems}</ul>`;
 }
 function htmlTocNode(node, linkOrigin) {
     const relativePath = linkOrigin.relativePathOf(node.path.toString());
@@ -46,7 +48,7 @@ function htmlTocNode(node, linkOrigin) {
         : "";
     switch (node.type) {
         case "branch":
-            return `<li${cssClass}><a href="${relativePath}">${node.title}</a>${htmlForToc(node.contents, linkOrigin)}</li>`;
+            return `<li${cssClass}><a href="${relativePath}">${node.title}</a>${htmlForToc(node.contents, linkOrigin, false)}</li>`;
         case "leaf":
             return `<li${cssClass}><a href="${relativePath}">${node.title}</a></li>`;
         case "bud":

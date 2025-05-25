@@ -106,7 +106,7 @@ test("htmlToc", {
         const files = [
             { type: "html", path: of("/foo.html"), title: "This Is Foo" },
         ];
-        const expected = `<ul><li><a href="foo.html">This Is Foo</a></li></ul>`;
+        const expected = `<ul class="mdsite-toc"><li><a href="foo.html">This Is Foo</a></li></ul>`;
         expect(htmlToc(files, OutputPath.of("/index.html")), is, expected);
     },
     "generates a list of multiple links"() {
@@ -114,14 +114,14 @@ test("htmlToc", {
             { type: "html", path: of("/bar.html"), title: "Bar" },
             { type: "html", path: of("/foo.html"), title: "Foo" },
         ];
-        const expected = `<ul><li><a href="bar.html">Bar</a></li><li><a href="foo.html">Foo</a></li></ul>`;
+        const expected = `<ul class="mdsite-toc"><li><a href="bar.html">Bar</a></li><li><a href="foo.html">Foo</a></li></ul>`;
         expect(htmlToc(files, OutputPath.of("/index.html")), is, expected);
     },
     "creates relative links, starting from the linkOrigin"() {
         const files = [
             { type: "html", path: of("/foo.html"), title: "Foo" },
         ];
-        const expected = `<ul><li><a href="../../../foo.html">Foo</a></li></ul>`;
+        const expected = `<ul class="mdsite-toc"><li><a href="../../../foo.html">Foo</a></li></ul>`;
         expect(htmlToc(files, OutputPath.of("/one/two/three/foo.html"), { root: "/" }), is, expected);
     },
     recurses() {
@@ -129,7 +129,7 @@ test("htmlToc", {
             { type: "html", path: of("/bar/index.html"), title: "Bar" },
             { type: "html", path: of("/bar/baz.html"), title: "Baz" },
         ];
-        const expected = `<ul><li><a href="bar/index.html">Bar</a><ul><li><a href="bar/baz.html">Baz</a></li></ul></li></ul>`;
+        const expected = `<ul class="mdsite-toc"><li><a href="bar/index.html">Bar</a><ul><li><a href="bar/baz.html">Baz</a></li></ul></li></ul>`;
         expect(htmlToc(files, OutputPath.of("/index.html")), is, expected);
     },
 });
