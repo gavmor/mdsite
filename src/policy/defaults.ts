@@ -21,6 +21,10 @@ export const defaultTemplate = trimMargin`
       <nav>
         {{home}} | {{up}} | {{prev}} | {{next}}
       </nav>
+      <script type="module">
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs";
+        mermaid.initialize({ startOnLoad: true });
+      </script>
     </body>
   </html>
 `;

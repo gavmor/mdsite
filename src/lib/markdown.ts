@@ -9,7 +9,7 @@ import { gfmHeadingId } from "marked-gfm-heading-id";
 const marked = new Marked()
   .use(markedFootnote())
   .use(gfmHeadingId())
-  .use({ extensions: [wikiLink(), macro()] })
+  .use({ extensions: [wikiLink(), macro(), mermaid()] })
   .use(
     markedHighlight({
       langPrefix: "hljs language-",
@@ -50,6 +50,38 @@ function wikiLink() {
       return `<a href="${token.text}.html">${token.text}</a>`;
     },
   };
+}
+
+function mermaid() {
+  return {
+    name: "mermaid",
+    level: "block",
+    start(src: string) {
+      return src.match(/^```mermaid[ \t]*$/m)?.index;
+    },
+    tokenizer(src: string) {
+      const rule = /^```mermaid[ \t]*\n([\s\S]*?)\n?```[ \t]*(?:\n+|$)/;
+      const match = rule.exec(src);
+      if (match) {
+        return {
+          type: "mermaid",
+          raw: match[0],
+          text: match[1],
+          tokens: [],
+        };
+      }
+    },
+    renderer(token: any): string {
+      return `<pre class="mermaid">${escapeHtml(token.text)}</pre>\n`;
+    },
+  };
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
 
 const macroRegex = new RegExp("^" + macroPattern);

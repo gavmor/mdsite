@@ -7,7 +7,7 @@ import { gfmHeadingId } from "marked-gfm-heading-id";
 const marked = new Marked()
     .use(markedFootnote())
     .use(gfmHeadingId())
-    .use({ extensions: [wikiLink(), macro()] })
+    .use({ extensions: [wikiLink(), macro(), mermaid()] })
     .use(markedHighlight({
     langPrefix: "hljs language-",
     highlight(code, lang) {
@@ -45,6 +45,37 @@ function wikiLink() {
             return `<a href="${token.text}.html">${token.text}</a>`;
         },
     };
+}
+function mermaid() {
+    return {
+        name: "mermaid",
+        level: "block",
+        start(src) {
+            var _a;
+            return (_a = src.match(/^```mermaid[ \t]*$/m)) === null || _a === void 0 ? void 0 : _a.index;
+        },
+        tokenizer(src) {
+            const rule = /^```mermaid[ \t]*\n([\s\S]*?)\n?```[ \t]*(?:\n+|$)/;
+            const match = rule.exec(src);
+            if (match) {
+                return {
+                    type: "mermaid",
+                    raw: match[0],
+                    text: match[1],
+                    tokens: [],
+                };
+            }
+        },
+        renderer(token) {
+            return `<pre class="mermaid">${escapeHtml(token.text)}</pre>\n`;
+        },
+    };
+}
+function escapeHtml(s) {
+    return s
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
 }
 const macroRegex = new RegExp("^" + macroPattern);
 function macro() {
