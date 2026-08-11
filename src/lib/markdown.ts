@@ -5,6 +5,7 @@ import hljs from "highlight.js";
 import { macroPattern } from "../domain/macros/parser.js";
 import markedFootnote from "marked-footnote";
 import { gfmHeadingId } from "marked-gfm-heading-id";
+import { mermaidImageTag } from "./mermaid.js";
 
 const marked = new Marked()
   .use(markedFootnote())
@@ -72,16 +73,9 @@ function mermaid() {
       }
     },
     renderer(token: any): string {
-      return `<pre class="mermaid">${escapeHtml(token.text)}</pre>\n`;
+      return mermaidImageTag(token.text) + "\n";
     },
   };
-}
-
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
 }
 
 const macroRegex = new RegExp("^" + macroPattern);

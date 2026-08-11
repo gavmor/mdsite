@@ -7,6 +7,7 @@ import {
 import { addSyntheticFiles } from "./synthetic-files.js";
 import type { Linkable, ProjectGlobalInfo } from "./project-global-info.js";
 import { Entry, sortEntries } from "./order.js";
+import { getMermaidAssets, resetMermaidAssets } from "../lib/mermaid.js";
 
 export class Project implements ProjectGlobalInfo {
   files: ProjectFileSet;
@@ -15,6 +16,10 @@ export class Project implements ProjectGlobalInfo {
   #index: Record<string, number> | undefined;
 
   constructor(files: FileSet, template: string = "dummy template") {
+    // Markdown-to-HTML conversion (and any mermaid diagram rendering it
+    // triggers) happens eagerly below, so the mermaid asset registry must be
+    // reset before it, not in build().
+    resetMermaidAssets();
     this.files = mapEntries(
       addSyntheticFiles(files),
       pathAndBufferToProjectFile
@@ -23,9 +28,10 @@ export class Project implements ProjectGlobalInfo {
   }
 
   build() {
-    return mapEntries(this.files, ([_, projectFile]) => {
+    const rendered = mapEntries(this.files, ([_, projectFile]) => {
       return projectFile.render(this);
     });
+    return { ...rendered, ...getMermaidAssets() };
   }
 
   get orderedLinkables(): Linkable[] {

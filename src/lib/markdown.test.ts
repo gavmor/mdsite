@@ -25,20 +25,23 @@ test("htmlFromMarkdown", {
     expect(htmlFromMarkdown("[[Foo|Bar]]"), is, `<p>[[Foo|Bar]]</p>\n`);
   },
 
-  "renders a mermaid code block as an unescaped-for-highlighting pre tag"() {
+  "renders a mermaid code block as a link to a generated SVG asset"() {
+    const html = htmlFromMarkdown("```mermaid\ngraph TD;\nA-->B;\n```");
     expect(
-      htmlFromMarkdown("```mermaid\ngraph TD;\nA-->B;\n```"),
+      /^<img src="\/assets\/mermaid\/[0-9a-f]{16}\.svg" alt="Mermaid diagram">\n$/.test(
+        html
+      ),
       is,
-      `<pre class="mermaid">graph TD;\nA--&gt;B;</pre>\n`
+      true
     );
   },
 
-  "HTML-escapes mermaid source so it round-trips as text content"() {
-    expect(
-      htmlFromMarkdown('```mermaid\ngraph TD;\nA["<script>"]-->B;\n```'),
-      is,
-      `<pre class="mermaid">graph TD;\nA["&lt;script&gt;"]--&gt;B;</pre>\n`
+  "does not inline mermaid source into the page HTML"() {
+    const html = htmlFromMarkdown(
+      '```mermaid\ngraph TD;\nA["<script>"]-->B;\n```'
     );
+    expect(html.includes("<script>"), is, false);
+    expect(html.includes("graph TD"), is, false);
   },
 
   "does not run syntax highlighting on mermaid blocks"() {
